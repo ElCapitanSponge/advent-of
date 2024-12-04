@@ -1,0 +1,11 @@
+{
+	"name": "advent-of",
+	"version": "1.0.0",
+	"description": "",
+	"packageManager": "pnpm@9.14.4",
+	"scripts": {
+		"build": "pnpm --filter='./packages/*' run build",
+		"dev": "pnpm --filter='./packages/*' run dev",
+		"test": "pnpm --filter='./tests/*' run test"
+	}
+}

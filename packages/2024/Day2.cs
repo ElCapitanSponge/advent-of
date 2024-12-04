@@ -57,48 +57,42 @@ public class Day2
 
         List<Tuple<int, Trajectory>> dampenedPairMap = new List<Tuple<int, Trajectory>>();
 
-        Trajectory dampenedTrajectory = pairMap[0].Item2;
+        int aIndex = 0;
+        int bIndex = 1;
 
-        for (int i = 0; i < reportLine.Length - 1; )
+        while (bIndex < reportLine.Length)
         {
-            int a = reportLine[i];
-            int b = reportLine[i + 1];
+            int a = reportLine[aIndex];
+            int b = reportLine[bIndex];
 
-            if (a < b && dampenedTrajectory == Trajectory.Increasing)
+            if (trajectory == Trajectory.Increasing)
             {
-                dampenedPairMap.Add(
-                    new Tuple<int, Trajectory>(Math.Abs(a - b), Trajectory.Increasing)
-                );
-                i++;
-            }
-            else if (a > b && dampenedTrajectory == Trajectory.Decreasing)
-            {
-                dampenedPairMap.Add(
-                    new Tuple<int, Trajectory>(Math.Abs(a - b), Trajectory.Decreasing)
-                );
-                i++;
-            }
-            else
-            {
-                b = reportLine[i + 2];
-
-                if (a < b && dampenedTrajectory == Trajectory.Increasing)
+                if (a < b)
                 {
                     dampenedPairMap.Add(
                         new Tuple<int, Trajectory>(Math.Abs(a - b), Trajectory.Increasing)
                     );
-                    i += 2;
+                    aIndex = bIndex;
+                    bIndex++;
                 }
-                else if (a > b && dampenedTrajectory == Trajectory.Decreasing)
+                else
+                {
+                    bIndex++;
+                }
+            }
+            else if (trajectory == Trajectory.Decreasing)
+            {
+                if (a > b)
                 {
                     dampenedPairMap.Add(
                         new Tuple<int, Trajectory>(Math.Abs(a - b), Trajectory.Decreasing)
                     );
-                    i += 2;
+                    aIndex = bIndex;
+                    bIndex++;
                 }
                 else
                 {
-                    return null;
+                    bIndex++;
                 }
             }
         }

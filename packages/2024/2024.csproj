@@ -10,6 +10,7 @@
 
 	<ItemGroup>
 		<Compile Include="./Day1.cs" />
+		<Compile Include="./Day2.cs" />
 		<Compile Include="./Common/FileHandler.cs" />
 		<Compile Include="./Common/Assertion.cs" />
 	</ItemGroup>

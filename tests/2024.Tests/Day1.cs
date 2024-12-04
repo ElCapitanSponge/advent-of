@@ -27,7 +27,7 @@ public class Day1Test
         Day1 day1 = new Day1(_2024.Common.FileEnvironmentType.Question);
         day1.LoadAndReadFile();
         day1.ParseFileLines();
-        _output.WriteLine($"QuestionPartOne solution: {day1.SolvePartOne()}");
+        _output.WriteLine($"Day 1 Part One: {day1.SolvePartOne()}");
     }
 
     [Fact]
@@ -45,6 +45,6 @@ public class Day1Test
         Day1 day1 = new Day1(_2024.Common.FileEnvironmentType.Question);
         day1.LoadAndReadFile();
         day1.ParseFileLines();
-        _output.WriteLine($"QuestionPartTwo solution: {day1.SolvePartTwo()}");
+        _output.WriteLine($"Day 1 Part Two: {day1.SolvePartTwo()}");
     }
 }

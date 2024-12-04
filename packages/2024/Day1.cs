@@ -30,7 +30,7 @@ public class Day1
     {
         this.FileLines = FileHandler.ReadFileByLines(this.FileName, this.EnvironmentType);
         Assertion.Assert(this.FileLines != null, "File lines are null");
-        Assertion.Assert(this.FileLines.Count() > 0, "File lines are empty");
+        Assertion.Assert(this.FileLines?.Count() > 0, "File lines are empty");
     }
 
     public void ParseFileLines()
@@ -38,7 +38,7 @@ public class Day1
         this.FileLines?.ToList()
             .ForEach(line =>
             {
-                string[] splitLine = line.Split("   ");
+                string[] splitLine = line.Split(this.SplitString);
                 Assertion.Assert(
                     splitLine.Length == 2,
                     $"Invalid line: {line} - {splitLine.Length}"
@@ -123,6 +123,8 @@ public class Day1
     public List<int> NumbersColumnOne => this._numbersColumnOne;
 
     public List<int> NumbersColumnTwo => this._numbersColumnTwo;
+
+    public string SplitString => "   ";
 
     #endregion // Properties
 }

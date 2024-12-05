@@ -27,6 +27,9 @@ public class Day2
         int[] reportLine
     )
     {
+        Console.WriteLine("DampenPair");;
+		Console.WriteLine("reportLine: " + string.Join(", ", reportLine));
+        Console.WriteLine("pairMap: " + string.Join(", ", pairMap));
         Trajectory trajectory = this.GetTrajectoryDampner(pairMap);
 
         int originalCount = pairMap.Count;
@@ -96,6 +99,8 @@ public class Day2
                 }
             }
         }
+
+        Console.WriteLine("dampenedPairMap: " + string.Join(", ", dampenedPairMap));
 
         return dampenedPairMap;
     }

@@ -2,23 +2,15 @@ namespace AOC._2024;
 
 using AOC._2024.Common;
 
-public class Day2
+public class Day2 : DayBase
 {
     #region Constructor
 
-    public Day2(FileEnvironmentType environmentType)
+    public Day2(FileEnvironmentType environmentType, bool useQuestionData = false) : base(environmentType, useQuestionData)
     {
-        this._environmentType = environmentType;
     }
 
     #endregion // Constructor
-
-    #region Fields
-
-    private readonly FileEnvironmentType _environmentType;
-    private IEnumerable<string>? _fileLines;
-
-    #endregion // Fields
 
     #region Methods
 
@@ -27,46 +19,18 @@ public class Day2
         int[] reportLine
     )
     {
-        Console.WriteLine("DampenPair");;
-		Console.WriteLine("reportLine: " + string.Join(", ", reportLine));
-        Console.WriteLine("pairMap: " + string.Join(", ", pairMap));
+        Utils.Print("DampenPair", this.EnvironmentType);
+        Utils.Print(reportLine, this.EnvironmentType);
+        Utils.Print(pairMap, this.EnvironmentType);
+
         Trajectory trajectory = this.GetTrajectoryDampner(pairMap);
-
         int originalCount = pairMap.Count;
-
-        if (trajectory == Trajectory.Increasing)
-        {
-            pairMap = pairMap
-                .Select(pair => new Tuple<int, Trajectory>(pair.Item1, Trajectory.Increasing))
-                .ToList();
-        }
-
-        if (trajectory == Trajectory.Decreasing)
-        {
-            pairMap = pairMap
-                .Select(pair => new Tuple<int, Trajectory>(pair.Item1, Trajectory.Decreasing))
-                .ToList();
-        }
-
-        if (pairMap.Count < originalCount - 1)
-        {
-            return null;
-        }
-
-        if (pairMap.Count == originalCount)
-        {
-            return pairMap;
-        }
-
         List<Tuple<int, Trajectory>> dampenedPairMap = new List<Tuple<int, Trajectory>>();
 
-        int aIndex = 0;
-        int bIndex = 1;
-
-        while (bIndex < reportLine.Length)
+        for (int i = 1; i < reportLine.Length; )
         {
-            int a = reportLine[aIndex];
-            int b = reportLine[bIndex];
+            int a = reportLine[i - 1];
+            int b = reportLine[i];
 
             if (trajectory == Trajectory.Increasing)
             {
@@ -75,12 +39,16 @@ public class Day2
                     dampenedPairMap.Add(
                         new Tuple<int, Trajectory>(Math.Abs(a - b), Trajectory.Increasing)
                     );
-                    aIndex = bIndex;
-                    bIndex++;
+                    i++;
+
+                    Utils.Print($"a: {a}, b: {b} - passed", this.EnvironmentType);
                 }
                 else
                 {
-                    bIndex++;
+                    reportLine = reportLine.Where((val, idx) => idx != i).ToArray();
+
+                    Utils.Print($"a: {a}, b: {b} - failed", this.EnvironmentType);
+                    Utils.Print(reportLine, this.EnvironmentType);
                 }
             }
             else if (trajectory == Trajectory.Decreasing)
@@ -90,17 +58,27 @@ public class Day2
                     dampenedPairMap.Add(
                         new Tuple<int, Trajectory>(Math.Abs(a - b), Trajectory.Decreasing)
                     );
-                    aIndex = bIndex;
-                    bIndex++;
+                    i++;
+
+                    Utils.Print($"a: {a}, b: {b} - passed", this.EnvironmentType);
                 }
                 else
                 {
-                    bIndex++;
+                    reportLine = reportLine.Where((val, idx) => idx != i).ToArray();
+
+                    Utils.Print($"a: {a}, b: {b} - failed", this.EnvironmentType);
+                    Utils.Print(reportLine, this.EnvironmentType);
                 }
             }
         }
 
-        Console.WriteLine("dampenedPairMap: " + string.Join(", ", dampenedPairMap));
+        Utils.Print("Dampened Pair Map", this.EnvironmentType);
+        Utils.Print(dampenedPairMap, this.EnvironmentType);
+
+        if (dampenedPairMap.Count < originalCount - 1)
+        {
+            return null;
+        }
 
         return dampenedPairMap;
     }
@@ -163,13 +141,6 @@ public class Day2
         return Trajectory.Undetermined;
     }
 
-    private void LoadAndReadFile()
-    {
-        this.FileLines = FileHandler.ReadFileByLines(this.FileName, this.EnvironmentType);
-        Assertion.Assert(this.FileLines != null, "File lines are null");
-        Assertion.Assert(this.FileLines?.Count() > 0, "File lines are empty");
-    }
-
     private bool IsSafeReport(int[] reportLine)
     {
         List<Tuple<int, Trajectory>> pairMap = this.GetPairMap(reportLine);
@@ -221,10 +192,12 @@ public class Day2
         return true;
     }
 
-    public int SolvePartOne()
-    {
-        this.LoadAndReadFile();
+	protected override void ParseFileLines()
+	{
+	}
 
+    public override int SolvePartOne()
+    {
         int safeCount = 0;
 
         this.FileLines?.ToList()
@@ -241,10 +214,8 @@ public class Day2
         return safeCount;
     }
 
-    public int SolvePartTwo()
+    public override int SolvePartTwo()
     {
-        this.LoadAndReadFile();
-
         int safeCount = 0;
 
         this.FileLines?.ToList()
@@ -265,17 +236,9 @@ public class Day2
 
     #region Properties
 
-    private FileEnvironmentType EnvironmentType => this._environmentType;
+    protected override string FileName => "Day2.dat";
 
-    private IEnumerable<string>? FileLines
-    {
-        get => this._fileLines;
-        set => this._fileLines = value;
-    }
-
-    private string FileName => "Day2.dat";
-
-    private string SplitString => " ";
+    protected override string SplitString => " ";
 
     #endregion // Properties
 }

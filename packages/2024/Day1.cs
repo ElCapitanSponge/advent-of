@@ -2,13 +2,13 @@
 
 using AOC._2024.Common;
 
-public class Day1
+public class Day1 : DayBase
 {
     #region Constructor
 
-    public Day1(FileEnvironmentType environmentType)
+    public Day1(FileEnvironmentType environmentType, bool useQuestionData = false)
+        : base(environmentType, useQuestionData)
     {
-        this._environmentType = environmentType;
         this._numbersColumnOne = new List<int>();
         this._numbersColumnTwo = new List<int>();
     }
@@ -17,8 +17,6 @@ public class Day1
 
     #region Fields
 
-    private readonly FileEnvironmentType _environmentType;
-    private IEnumerable<string>? _fileLines;
     private readonly List<int> _numbersColumnOne;
     private readonly List<int> _numbersColumnTwo;
 
@@ -26,14 +24,7 @@ public class Day1
 
     #region Methods
 
-    private void LoadAndReadFile()
-    {
-        this.FileLines = FileHandler.ReadFileByLines(this.FileName, this.EnvironmentType);
-        Assertion.Assert(this.FileLines != null, "File lines are null");
-        Assertion.Assert(this.FileLines?.Count() > 0, "File lines are empty");
-    }
-
-    private void ParseFileLines()
+    protected override void ParseFileLines()
     {
         this.FileLines?.ToList()
             .ForEach(line =>
@@ -69,9 +60,8 @@ public class Day1
         return count * listOneValue;
     }
 
-    public int SolvePartOne()
+    public override int SolvePartOne()
     {
-        this.LoadAndReadFile();
         this.ParseFileLines();
 
         int result = 0;
@@ -91,9 +81,8 @@ public class Day1
         return result;
     }
 
-    public int SolvePartTwo()
+    public override int SolvePartTwo()
     {
-        this.LoadAndReadFile();
         this.ParseFileLines();
 
         int result = 0;
@@ -116,21 +105,13 @@ public class Day1
 
     #region Properties
 
-    private FileEnvironmentType EnvironmentType => this._environmentType;
-
-    private IEnumerable<string>? FileLines
-    {
-        get => this._fileLines;
-        set => this._fileLines = value;
-    }
-
-    private string FileName => "Day1.dat";
+    protected override string FileName => "Day1.dat";
 
     private List<int> NumbersColumnOne => this._numbersColumnOne;
 
     private List<int> NumbersColumnTwo => this._numbersColumnTwo;
 
-    private string SplitString => "   ";
+    protected override string SplitString => "   ";
 
     #endregion // Properties
 }

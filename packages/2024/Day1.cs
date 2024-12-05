@@ -26,14 +26,14 @@ public class Day1
 
     #region Methods
 
-    public void LoadAndReadFile()
+    private void LoadAndReadFile()
     {
         this.FileLines = FileHandler.ReadFileByLines(this.FileName, this.EnvironmentType);
         Assertion.Assert(this.FileLines != null, "File lines are null");
         Assertion.Assert(this.FileLines?.Count() > 0, "File lines are empty");
     }
 
-    public void ParseFileLines()
+    private void ParseFileLines()
     {
         this.FileLines?.ToList()
             .ForEach(line =>
@@ -71,6 +71,9 @@ public class Day1
 
     public int SolvePartOne()
     {
+        this.LoadAndReadFile();
+        this.ParseFileLines();
+
         int result = 0;
 
         for (int i = 0; i < this.NumbersColumnOne.Count; i++)
@@ -90,6 +93,9 @@ public class Day1
 
     public int SolvePartTwo()
     {
+        this.LoadAndReadFile();
+        this.ParseFileLines();
+
         int result = 0;
 
         this.NumbersColumnOne.ForEach(value =>
@@ -112,19 +118,19 @@ public class Day1
 
     private FileEnvironmentType EnvironmentType => this._environmentType;
 
-    public IEnumerable<string>? FileLines
+    private IEnumerable<string>? FileLines
     {
         get => this._fileLines;
-        private set => this._fileLines = value;
+        set => this._fileLines = value;
     }
 
     private string FileName => "Day1.dat";
 
-    public List<int> NumbersColumnOne => this._numbersColumnOne;
+    private List<int> NumbersColumnOne => this._numbersColumnOne;
 
-    public List<int> NumbersColumnTwo => this._numbersColumnTwo;
+    private List<int> NumbersColumnTwo => this._numbersColumnTwo;
 
-    public string SplitString => "   ";
+    private string SplitString => "   ";
 
     #endregion // Properties
 }

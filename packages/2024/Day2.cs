@@ -158,7 +158,7 @@ public class Day2
         return Trajectory.Undetermined;
     }
 
-    public void LoadAndReadFile()
+    private void LoadAndReadFile()
     {
         this.FileLines = FileHandler.ReadFileByLines(this.FileName, this.EnvironmentType);
         Assertion.Assert(this.FileLines != null, "File lines are null");
@@ -218,6 +218,8 @@ public class Day2
 
     public int SolvePartOne()
     {
+        this.LoadAndReadFile();
+
         int safeCount = 0;
 
         this.FileLines?.ToList()
@@ -236,6 +238,8 @@ public class Day2
 
     public int SolvePartTwo()
     {
+        this.LoadAndReadFile();
+
         int safeCount = 0;
 
         this.FileLines?.ToList()
@@ -258,10 +262,10 @@ public class Day2
 
     private FileEnvironmentType EnvironmentType => this._environmentType;
 
-    public IEnumerable<string>? FileLines
+    private IEnumerable<string>? FileLines
     {
         get => this._fileLines;
-        private set => this._fileLines = value;
+        set => this._fileLines = value;
     }
 
     private string FileName => "Day2.dat";

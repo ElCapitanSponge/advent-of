@@ -2,6 +2,10 @@ namespace AOC._2024.Common;
 
 public static class FileHandler
 {
+    private static readonly string _debugDataFolder = Path.Combine(
+		Environment.CurrentDirectory,
+		"../../tests/2024.Tests/data"
+	);
     private static readonly string _testDataFolder = Path.Combine(
         Environment.CurrentDirectory,
         "../../../data"
@@ -18,6 +22,7 @@ public static class FileHandler
     {
         var path = environmentType switch
         {
+            FileEnvironmentType.Debug => Path.Combine(_debugDataFolder, fileName),
             FileEnvironmentType.Test => Path.Combine(_testDataFolder, fileName),
             FileEnvironmentType.Question => Path.Combine(_questionDataFolder, fileName),
             _ => throw new ArgumentOutOfRangeException(
@@ -34,6 +39,7 @@ public static class FileHandler
     {
         var path = environmentType switch
         {
+            FileEnvironmentType.Debug => Path.Combine(_debugDataFolder, fileName),
             FileEnvironmentType.Test => Path.Combine(_testDataFolder, fileName),
             FileEnvironmentType.Question => Path.Combine(_questionDataFolder, fileName),
             _ => throw new ArgumentOutOfRangeException(
@@ -51,4 +57,5 @@ public enum FileEnvironmentType
 {
     Test,
     Question,
+    Debug,
 }

@@ -16,8 +16,6 @@ public class Day1Test
     public void SamplePartOne()
     {
         Day1 day1 = new Day1(_2024.Common.FileEnvironmentType.Test);
-        day1.LoadAndReadFile();
-        day1.ParseFileLines();
         Assert.Equal(11, day1.SolvePartOne());
     }
 
@@ -25,8 +23,6 @@ public class Day1Test
     public void QuestionPartOne()
     {
         Day1 day1 = new Day1(_2024.Common.FileEnvironmentType.Question);
-        day1.LoadAndReadFile();
-        day1.ParseFileLines();
         _output.WriteLine($"Day 1 Part One: {day1.SolvePartOne()}");
     }
 
@@ -34,8 +30,6 @@ public class Day1Test
     public void SamplePartTwo()
     {
         Day1 day1 = new Day1(_2024.Common.FileEnvironmentType.Test);
-        day1.LoadAndReadFile();
-        day1.ParseFileLines();
         Assert.Equal(31, day1.SolvePartTwo());
     }
 
@@ -43,8 +37,6 @@ public class Day1Test
     public void QuestionPartTwo()
     {
         Day1 day1 = new Day1(_2024.Common.FileEnvironmentType.Question);
-        day1.LoadAndReadFile();
-        day1.ParseFileLines();
         _output.WriteLine($"Day 1 Part Two: {day1.SolvePartTwo()}");
     }
 }

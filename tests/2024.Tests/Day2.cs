@@ -17,7 +17,6 @@ public class Day2Test
 	public void SamplePartOne()
 	{
 		Day2 day2 = new Day2(FileEnvironmentType.Test);
-		day2.LoadAndReadFile();
 		Assert.Equal(2, day2.SolvePartOne());
 	}
 
@@ -25,7 +24,6 @@ public class Day2Test
 	public void PartOne()
 	{
 		Day2 day2 = new Day2(FileEnvironmentType.Question);
-		day2.LoadAndReadFile();
 		_output.WriteLine($"Day 2 Part One: {day2.SolvePartOne()}");
 	}
 
@@ -33,7 +31,6 @@ public class Day2Test
 	public void SamplePartTwo()
 	{
 		Day2 day2 = new Day2(FileEnvironmentType.Test);
-		day2.LoadAndReadFile();
 		Assert.Equal(4, day2.SolvePartTwo());
 	}
 
@@ -41,7 +38,6 @@ public class Day2Test
 	public void PartTwo()
 	{
 		Day2 day2 = new Day2(FileEnvironmentType.Question);
-		day2.LoadAndReadFile();
 		_output.WriteLine($"Day 2 Part Two: {day2.SolvePartTwo()}");
 	}
 }

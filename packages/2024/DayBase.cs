@@ -6,7 +6,7 @@ public abstract class DayBase
 {
     #region Constructor
 
-    public DayBase(FileEnvironmentType environmentType, bool useQuestionData = false)
+    public DayBase(FileEnvironmentType environmentType, bool useQuestionData)
     {
         this._environmentType = environmentType;
         this._useQuestionData = useQuestionData;

@@ -6,81 +6,32 @@ public class Day2 : DayBase
 {
     #region Constructor
 
-    public Day2(FileEnvironmentType environmentType, bool useQuestionData = false) : base(environmentType, useQuestionData)
-    {
-    }
+    public Day2(FileEnvironmentType environmentType)
+        : base(environmentType, false) { }
+
+    public Day2(FileEnvironmentType environmentType, bool useQuestionData)
+        : base(environmentType, useQuestionData) { }
 
     #endregion // Constructor
 
     #region Methods
 
-    private List<Tuple<int, Trajectory>>? DampenPair(
+    private List<Tuple<int, Trajectory>> DampenPair(
         List<Tuple<int, Trajectory>> pairMap,
         int[] reportLine
     )
     {
-        Utils.Print("DampenPair", this.EnvironmentType);
-        Utils.Print(reportLine, this.EnvironmentType);
-        Utils.Print(pairMap, this.EnvironmentType);
-
         Trajectory trajectory = this.GetTrajectoryDampner(pairMap);
-        int originalCount = pairMap.Count;
-        List<Tuple<int, Trajectory>> dampenedPairMap = new List<Tuple<int, Trajectory>>();
-
-        for (int i = 1; i < reportLine.Length; )
-        {
-            int a = reportLine[i - 1];
-            int b = reportLine[i];
-
-            if (trajectory == Trajectory.Increasing)
-            {
-                if (a < b)
-                {
-                    dampenedPairMap.Add(
-                        new Tuple<int, Trajectory>(Math.Abs(a - b), Trajectory.Increasing)
-                    );
-                    i++;
-
-                    Utils.Print($"a: {a}, b: {b} - passed", this.EnvironmentType);
-                }
-                else
-                {
-                    reportLine = reportLine.Where((val, idx) => idx != i).ToArray();
-
-                    Utils.Print($"a: {a}, b: {b} - failed", this.EnvironmentType);
-                    Utils.Print(reportLine, this.EnvironmentType);
-                }
-            }
-            else if (trajectory == Trajectory.Decreasing)
-            {
-                if (a > b)
-                {
-                    dampenedPairMap.Add(
-                        new Tuple<int, Trajectory>(Math.Abs(a - b), Trajectory.Decreasing)
-                    );
-                    i++;
-
-                    Utils.Print($"a: {a}, b: {b} - passed", this.EnvironmentType);
-                }
-                else
-                {
-                    reportLine = reportLine.Where((val, idx) => idx != i).ToArray();
-
-                    Utils.Print($"a: {a}, b: {b} - failed", this.EnvironmentType);
-                    Utils.Print(reportLine, this.EnvironmentType);
-                }
-            }
-        }
-
-        Utils.Print("Dampened Pair Map", this.EnvironmentType);
-        Utils.Print(dampenedPairMap, this.EnvironmentType);
-
-        if (dampenedPairMap.Count < originalCount - 1)
-        {
-            return null;
-        }
-
-        return dampenedPairMap;
+        List<int> pairsToBeRemoved = new List<int>();
+        pairsToBeRemoved = pairMap
+            .Where(pair => pair.Item2 != trajectory)
+            .Select(pair => pairMap.IndexOf(pair))
+            .ToList();
+        pairsToBeRemoved.Reverse();
+        pairsToBeRemoved.ForEach(index =>
+            reportLine = reportLine.Where((val, idx) => idx != index + 1).ToArray()
+        );
+        return this.GetPairMap(reportLine);
     }
 
     private List<Tuple<int, Trajectory>> GetPairMap(int[] reportLine)
@@ -167,10 +118,15 @@ public class Day2 : DayBase
             return false;
         }
 
-        List<Tuple<int, Trajectory>>? dampenedPairMap = this.DampenPair(pairMap, reportLine);
+        List<Tuple<int, Trajectory>> dampenedPairMap = this.DampenPair(pairMap, reportLine);
 
-        if (dampenedPairMap == null)
+        if (dampenedPairMap.Count < reportLine.Length - 2)
         {
+            Utils.Print("TOO FEW", this.EnvironmentType);
+            Utils.Print(reportLine, this.EnvironmentType);
+            Utils.Print(pairMap, this.EnvironmentType);
+            Utils.Print(dampenedPairMap, this.EnvironmentType);
+            Utils.Print("", this.EnvironmentType);
             return false;
         }
 
@@ -192,9 +148,7 @@ public class Day2 : DayBase
         return true;
     }
 
-	protected override void ParseFileLines()
-	{
-	}
+    protected override void ParseFileLines() { }
 
     public override int SolvePartOne()
     {

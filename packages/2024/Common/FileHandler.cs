@@ -31,11 +31,11 @@ public static class FileHandler
 
         if (environmentType == FileEnvironmentType.Debug)
         {
+            path = Path.Combine(_debugDataFolder, fileName);
             if (useQuestionData)
             {
                 path = Path.Combine(_debugDataFolderUseQuestion, fileName);
             }
-            path = Path.Combine(_debugDataFolder, fileName);
         }
         else if (environmentType == FileEnvironmentType.Test)
         {
@@ -63,11 +63,11 @@ public static class FileHandler
 
         if (environmentType == FileEnvironmentType.Debug)
         {
+            path = Path.Combine(_debugDataFolder, fileName);
             if (useQuestionData)
             {
                 path = Path.Combine(_debugDataFolderUseQuestion, fileName);
             }
-            path = Path.Combine(_debugDataFolder, fileName);
         }
         else if (environmentType == FileEnvironmentType.Test)
         {

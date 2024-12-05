@@ -4,8 +4,9 @@
 	"description": "",
 	"packageManager": "pnpm@9.14.4",
 	"scripts": {
-		"build": "pnpm --filter='./packages/*' run build",
-		"dev": "pnpm --filter='./packages/*' run dev",
-		"test": "pnpm --filter='./tests/*' run test"
+		"build": "pnpm --filter=\"./packages/**\" run build",
+		"debug": "pnpm --filter=\"./debug/**\" run debug",
+		"dev": "pnpm --filter=\"./packages/**\" run dev",
+		"test": "pnpm --filter=\"./tests/**\" run test"
 	}
 }

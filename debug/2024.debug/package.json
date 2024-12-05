@@ -1,0 +1,9 @@
+{
+  "name": "2024.debug",
+  "version": "1.0.0",
+  "scripts": {
+		"debug": "dotnet run",
+		"build": "dotnet build",
+		"dev": "dotnet watch"
+  }
+}

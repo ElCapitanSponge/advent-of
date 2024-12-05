@@ -17,11 +17,6 @@
 
 	<ItemGroup>
 		<Using Include="Xunit" />
-		</ItemGroup>
-
-	<ItemGroup>
-		<Compile Include="./Day1.cs" />
-		<Compile Include="./Day2.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

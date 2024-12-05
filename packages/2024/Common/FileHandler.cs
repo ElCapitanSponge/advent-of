@@ -3,7 +3,7 @@ namespace AOC._2024.Common;
 public static class FileHandler
 {
     private static readonly string _testDataFolder = Path.Combine(
-        Environment.SystemDirectory,
+        Environment.CurrentDirectory,
         "../../../data"
     );
     private static readonly string _questionDataFolder = Path.Combine(

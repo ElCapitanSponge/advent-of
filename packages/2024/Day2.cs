@@ -16,139 +16,108 @@ public class Day2 : DayBase
 
     #region Methods
 
-    private List<Tuple<int, Trajectory>> DampenPair(
-        List<Tuple<int, Trajectory>> pairMap,
-        int[] reportLine
-    )
-    {
-        Trajectory trajectory = this.GetTrajectoryDampner(pairMap);
-        List<int> pairsToBeRemoved = new List<int>();
-        pairsToBeRemoved = pairMap
-            .Where(pair => pair.Item2 != trajectory)
-            .Select(pair => pairMap.IndexOf(pair))
-            .ToList();
-        pairsToBeRemoved.Reverse();
-        pairsToBeRemoved.ForEach(index =>
-            reportLine = reportLine.Where((val, idx) => idx != index + 1).ToArray()
-        );
-        return this.GetPairMap(reportLine);
-    }
-
-    private List<Tuple<int, Trajectory>> GetPairMap(int[] reportLine)
-    {
-        int pairs = reportLine.Length - 1;
-
-        List<Tuple<int, Trajectory>> pairMap = new List<Tuple<int, Trajectory>>();
-
-        for (int i = 0; i < pairs; i++)
-        {
-            int a = reportLine[i];
-            int b = reportLine[i + 1];
-
-            Trajectory trajectory = Trajectory.Undetermined;
-            if (a < b)
-            {
-                trajectory = Trajectory.Increasing;
-            }
-            else if (a > b)
-            {
-                trajectory = Trajectory.Decreasing;
-            }
-
-            int difference = Math.Abs(a - b);
-            pairMap.Add(new Tuple<int, Trajectory>(difference, trajectory));
-        }
-
-        return pairMap;
-    }
-
-    private Trajectory GetTrajectory(List<Tuple<int, Trajectory>> pairMap)
-    {
-        if (pairMap.Where(pair => pair.Item2 == Trajectory.Increasing).Count() == pairMap.Count)
-        {
-            return Trajectory.Increasing;
-        }
-
-        if (pairMap.Where(pair => pair.Item2 == Trajectory.Decreasing).Count() == pairMap.Count)
-        {
-            return Trajectory.Decreasing;
-        }
-
-        return Trajectory.Undetermined;
-    }
-
-    private Trajectory GetTrajectoryDampner(List<Tuple<int, Trajectory>> pairMap)
-    {
-        if (pairMap.Where(pair => pair.Item2 == Trajectory.Increasing).Count() >= pairMap.Count - 1)
-        {
-            return Trajectory.Increasing;
-        }
-
-        if (pairMap.Where(pair => pair.Item2 == Trajectory.Decreasing).Count() >= pairMap.Count - 1)
-        {
-            return Trajectory.Decreasing;
-        }
-
-        return Trajectory.Undetermined;
-    }
-
-    private bool IsSafeReport(int[] reportLine)
-    {
-        List<Tuple<int, Trajectory>> pairMap = this.GetPairMap(reportLine);
-
-        if (this.GetTrajectory(pairMap) == Trajectory.Undetermined)
-        {
-            return false;
-        }
-
-        if (!this.IsValidHops(pairMap))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    private bool IsSafeReportDampner(int[] reportLine)
-    {
-        List<Tuple<int, Trajectory>> pairMap = this.GetPairMap(reportLine);
-
-        if (this.GetTrajectoryDampner(pairMap) == Trajectory.Undetermined)
-        {
-            return false;
-        }
-
-        List<Tuple<int, Trajectory>> dampenedPairMap = this.DampenPair(pairMap, reportLine);
-
-        if (dampenedPairMap.Count < reportLine.Length - 2)
-        {
-            Utils.Print("TOO FEW", this.EnvironmentType);
-            Utils.Print(reportLine, this.EnvironmentType);
-            Utils.Print(pairMap, this.EnvironmentType);
-            Utils.Print(dampenedPairMap, this.EnvironmentType);
-            Utils.Print("", this.EnvironmentType);
-            return false;
-        }
-
-        if (!this.IsValidHops(dampenedPairMap))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    private bool IsValidHops(List<Tuple<int, Trajectory>> pairMap)
-    {
-        if (pairMap.Where(pair => pair.Item1 > 3 || pair.Item1 == 0).Count() > 0)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
     protected override void ParseFileLines() { }
+
+    public bool IsSafeReport(int[] reportLine, bool dampened = false)
+    {
+        List<int[]> increasePairs = new List<int[]>();
+        List<int[]> decreasePairs = new List<int[]>();
+        List<int[]> duplicatePairs = new List<int[]>();
+        List<int[]> invalidPairs = new List<int[]>();
+
+        for (int i = 0; i < reportLine.Length - 1; i++)
+        {
+            int current = reportLine[i];
+            int next = reportLine[i + 1];
+            int distance = Math.Abs(next - current);
+
+            if (distance > 3)
+            {
+                invalidPairs.Add(new int[2] { current, next });
+            }
+            else if (distance == 0)
+            {
+                duplicatePairs.Add(new int[2] { current, next });
+            }
+            else if (current < next)
+            {
+                increasePairs.Add(new int[2] { current, next });
+            }
+            else if (current > next)
+            {
+                decreasePairs.Add(new int[2] { current, next });
+            }
+        }
+
+        int validCount = reportLine.Length - 1;
+        if ((increasePairs.Count == validCount || decreasePairs.Count == validCount))
+        {
+            return true;
+        }
+
+        if (dampened)
+        {
+            int valueToRemove = -1;
+
+            if (invalidPairs.Count > 1 || duplicatePairs.Count > 1)
+            {
+                return false;
+            }
+
+            if (increasePairs.Count < validCount - 1 || decreasePairs.Count < validCount - 1)
+            {
+                return false;
+            }
+
+            if (decreasePairs.Count == 1 && invalidPairs.Count == 0 && duplicatePairs.Count == 0)
+            {
+                valueToRemove = decreasePairs.First()[0];
+                int[] tmpReportLine = reportLine.Where(x => x != valueToRemove).ToArray();
+                if (this.IsSafeReport(tmpReportLine))
+                {
+                    return true;
+                }
+                valueToRemove = decreasePairs.First()[1];
+                tmpReportLine = reportLine.Where(x => x != valueToRemove).ToArray();
+                return this.IsSafeReport(tmpReportLine);
+            }
+
+            if (increasePairs.Count == 1 && invalidPairs.Count == 0 && duplicatePairs.Count == 0)
+            {
+                valueToRemove = increasePairs.First()[0];
+                int[] tmpReportLine = reportLine.Where(x => x != valueToRemove).ToArray();
+                if (this.IsSafeReport(tmpReportLine))
+                {
+                    return true;
+                }
+                valueToRemove = increasePairs.First()[1];
+                tmpReportLine = reportLine.Where(x => x != valueToRemove).ToArray();
+                return this.IsSafeReport(tmpReportLine);
+            }
+
+            if (invalidPairs.Count == 1 && duplicatePairs.Count == 0)
+            {
+                valueToRemove = invalidPairs.First()[0];
+                int[] tmpReportLine = reportLine.Where(x => x != valueToRemove).ToArray();
+                if (this.IsSafeReport(tmpReportLine))
+                {
+                    return true;
+                }
+                valueToRemove = invalidPairs.First()[1];
+                tmpReportLine = reportLine.Where(x => x != valueToRemove).ToArray();
+                return this.IsSafeReport(tmpReportLine);
+            }
+
+            if (duplicatePairs.Count == 1 && invalidPairs.Count == 0)
+            {
+                valueToRemove = duplicatePairs.First()[0];
+                int[] tmpReportLine = reportLine.Where(x => x != valueToRemove).ToArray();
+                return this.IsSafeReport(tmpReportLine);
+            }
+        }
+
+        return false;
+    }
 
     public override int SolvePartOne()
     {
@@ -164,7 +133,6 @@ public class Day2 : DayBase
                     safeCount++;
                 }
             });
-
         return safeCount;
     }
 
@@ -177,12 +145,11 @@ public class Day2 : DayBase
             {
                 string[] splitLine = line.Split(this.SplitString);
                 int[] reportLine = splitLine.Select(int.Parse).ToArray();
-                if (this.IsSafeReportDampner(reportLine))
+                if (this.IsSafeReport(reportLine, true))
                 {
                     safeCount++;
                 }
             });
-
         return safeCount;
     }
 
@@ -195,11 +162,4 @@ public class Day2 : DayBase
     protected override string SplitString => " ";
 
     #endregion // Properties
-}
-
-public enum Trajectory
-{
-    Undetermined,
-    Increasing,
-    Decreasing,
 }

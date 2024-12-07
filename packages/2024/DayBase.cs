@@ -36,6 +36,37 @@ public abstract class DayBase
         Assertion.Assert(this.FileLines?.Count() > 0, "File lines are empty");
     }
 
+    protected void LoadAndReadFile(SolutionPart solutionPart)
+    {
+        Assertion.Assert(
+            !this.TestDataDiffersBetweenParts,
+            "You are not allowed to use different test data between parts"
+        );
+        Assertion.Assert(
+            (solutionPart == SolutionPart.PartOne || solutionPart == SolutionPart.PartTwo),
+            "Invalid solution part"
+        );
+
+        string fileName = this.FileName;
+        switch (solutionPart)
+        {
+            case SolutionPart.PartOne:
+                fileName = fileName.Replace(".dat", "_1.dat");
+                break;
+            case SolutionPart.PartTwo:
+                fileName = fileName.Replace(".dat", "_2.dat");
+                break;
+        }
+
+        this.FileLines = FileHandler.ReadFileByLines(
+            fileName,
+            this.EnvironmentType,
+            this.UseQuestionData
+        );
+        Assertion.Assert(this.FileLines != null, "File lines are null");
+        Assertion.Assert(this.FileLines?.Count() > 0, "File lines are empty");
+    }
+
     protected abstract void ParseFileLines();
 
     public abstract int SolvePartOne();
@@ -58,7 +89,15 @@ public abstract class DayBase
 
     protected abstract string SplitString { get; }
 
+    protected virtual bool TestDataDiffersBetweenParts => false;
+
     protected bool UseQuestionData => this._useQuestionData;
 
     #endregion // Properties
+}
+
+public enum SolutionPart
+{
+    PartOne,
+    PartTwo,
 }

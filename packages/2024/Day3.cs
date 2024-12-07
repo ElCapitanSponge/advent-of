@@ -8,12 +8,30 @@ public class Day3 : DayBase
     #region Constructor
 
     public Day3(FileEnvironmentType environmentType)
-        : base(environmentType, false) { }
+        : base(environmentType, false)
+    {
+        this._differentDataUsed = false;
+    }
 
-    public Day3(FileEnvironmentType environmentType, bool useQuestionData)
-        : base(environmentType, useQuestionData) { }
+    public Day3(FileEnvironmentType environmentType, bool differentDataUsed)
+        : base(environmentType, false)
+    {
+        this._differentDataUsed = differentDataUsed;
+    }
+
+    public Day3(FileEnvironmentType environmentType, bool useQuestionData, bool differentDataUsed)
+        : base(environmentType, useQuestionData)
+    {
+        this._differentDataUsed = differentDataUsed;
+    }
 
     #endregion // Constructor
+
+    #region Fields
+
+    private readonly bool _differentDataUsed;
+
+    #endregion // Fields
 
     #region Methods
 
@@ -59,6 +77,12 @@ public class Day3 : DayBase
     public override int SolvePartOne()
     {
         int result = 0;
+
+        if (this.TestDataDiffersBetweenParts)
+        {
+            this.LoadAndReadFile(SolutionPart.PartOne);
+        }
+
         this.FileLines?.ToList()
             .ForEach(line =>
             {
@@ -78,7 +102,14 @@ public class Day3 : DayBase
 
     public override int SolvePartTwo()
     {
-        return 0;
+        int result = 0;
+
+        if (this.TestDataDiffersBetweenParts)
+        {
+            this.LoadAndReadFile(SolutionPart.PartTwo);
+        }
+
+        return result;
     }
 
     #endregion // Methods
@@ -88,6 +119,8 @@ public class Day3 : DayBase
     protected override string FileName => "Day3.dat";
 
     protected override string SplitString => "";
+
+    protected override bool TestDataDiffersBetweenParts => this._differentDataUsed;
 
     #endregion // Properties
 }

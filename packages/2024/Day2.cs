@@ -101,9 +101,9 @@ public class Day2 : DayBase
             if (duplicatePairs.Count == 1 && invalidPairs.Count == 0)
             {
                 valueToRemove = duplicatePairs.First()[0];
-				int firstIndexOf = Array.IndexOf(reportLine, valueToRemove);
-				int[] tmpReportLine = reportLine.Where((x, i) => i != firstIndexOf).ToArray();
-				Utils.Print(tmpReportLine, this.EnvironmentType);
+                int firstIndexOf = Array.IndexOf(reportLine, valueToRemove);
+                int[] tmpReportLine = reportLine.Where((x, i) => i != firstIndexOf).ToArray();
+                Utils.Print(tmpReportLine, this.EnvironmentType);
                 return this.IsSafeReport(tmpReportLine);
             }
         }

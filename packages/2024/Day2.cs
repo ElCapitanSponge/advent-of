@@ -59,16 +59,6 @@ public class Day2 : DayBase
         {
             int valueToRemove = -1;
 
-            if (invalidPairs.Count > 1 || duplicatePairs.Count > 1)
-            {
-                return false;
-            }
-
-            if (increasePairs.Count < validCount - 1 || decreasePairs.Count < validCount - 1)
-            {
-                return false;
-            }
-
             if (decreasePairs.Count == 1 && invalidPairs.Count == 0 && duplicatePairs.Count == 0)
             {
                 valueToRemove = decreasePairs.First()[0];
@@ -111,7 +101,9 @@ public class Day2 : DayBase
             if (duplicatePairs.Count == 1 && invalidPairs.Count == 0)
             {
                 valueToRemove = duplicatePairs.First()[0];
-                int[] tmpReportLine = reportLine.Where(x => x != valueToRemove).ToArray();
+				int firstIndexOf = Array.IndexOf(reportLine, valueToRemove);
+				int[] tmpReportLine = reportLine.Where((x, i) => i != firstIndexOf).ToArray();
+				Utils.Print(tmpReportLine, this.EnvironmentType);
                 return this.IsSafeReport(tmpReportLine);
             }
         }
@@ -145,9 +137,15 @@ public class Day2 : DayBase
             {
                 string[] splitLine = line.Split(this.SplitString);
                 int[] reportLine = splitLine.Select(int.Parse).ToArray();
+                Utils.Print(reportLine, this.EnvironmentType);
                 if (this.IsSafeReport(reportLine, true))
                 {
+                    Utils.Print("Safe", this.EnvironmentType);
                     safeCount++;
+                }
+                else
+                {
+                    Utils.Print("Unsafe", this.EnvironmentType);
                 }
             });
         return safeCount;

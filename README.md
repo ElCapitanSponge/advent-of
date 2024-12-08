@@ -20,5 +20,5 @@ The repository is my solutions to the ***Advent of Code***
   - [x] Part 1
   - [x] Part 2
 - [ ] Day 4
-  - [ ] Part 1
+  - [x] Part 1
   - [ ] Part 2

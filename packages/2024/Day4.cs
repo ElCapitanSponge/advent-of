@@ -120,7 +120,7 @@ public class Day4 : DayBase
 
     protected override string SplitString => "";
 
-    private string FindWordString => "xmas";
+    private string FindWordString => "XMAS";
 
     #endregion // Properties
 }

@@ -40,20 +40,18 @@ public class Day3 : DayBase
         Regex regex = new Regex(pattern);
         MatchCollection matches = regex.Matches(input);
 
-        bool isEnabled = true;
         foreach (Match match in matches)
         {
+            bool isEnabled = true;
             string precedingText = input.Substring(0, match.Index);
             int lastDont = precedingText.LastIndexOf("don't()");
             int lastDo = precedingText.LastIndexOf("do()");
 
+            Utils.Print($"lastDont: {lastDont}, lastDo: {lastDo}", this.EnvironmentType);
+
             if (lastDont > lastDo)
             {
                 isEnabled = false;
-            }
-            else if (lastDo > lastDont)
-            {
-                isEnabled = true;
             }
 
             if (isEnabled)
@@ -125,21 +123,17 @@ public class Day3 : DayBase
             this.LoadAndReadFile(SolutionPart.PartTwo);
         }
 
-        this.FileLines?.ToList()
-            .ForEach(line =>
+        string masterLine = string.Join("", this.FileLines ?? new List<string>());
+
+        List<string> mulPairs = ExtractMulPairsClosure(masterLine);
+        mulPairs.ForEach(mulPair =>
+        {
+            Tuple<int, int>? values = ExtractMulValues(mulPair);
+            if (values != null)
             {
-                Utils.Print(line, this.EnvironmentType);
-                List<string> mulPairs = ExtractMulPairsClosure(line);
-                mulPairs.ForEach(mulPair =>
-                {
-                    Utils.Print(mulPair, this.EnvironmentType);
-                    Tuple<int, int>? values = ExtractMulValues(mulPair);
-                    if (values != null)
-                    {
-                        result += Multiply(values.Item1, values.Item2);
-                    }
-                });
-            });
+                result += Multiply(values.Item1, values.Item2);
+            }
+        });
 
         return result;
     }

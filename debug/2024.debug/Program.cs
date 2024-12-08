@@ -5,7 +5,7 @@
         static void Main(string[] args)
         {
             Console.WriteLine("Day 3");
-            var day = new Day3(Common.FileEnvironmentType.Debug, true);
+            var day = new Day3(Common.FileEnvironmentType.Debug, true, false);
             Console.WriteLine($"Part One Result: {day.SolvePartOne()}");
             Console.WriteLine($"Part Two Result: {day.SolvePartTwo()}");
         }

@@ -17,4 +17,12 @@ public static class Utils
             Console.WriteLine($"[{string.Join(", ", value)}]");
         }
     }
+
+    public static void Print(bool value, FileEnvironmentType environmentType)
+    {
+        if (environmentType == FileEnvironmentType.Debug)
+        {
+            Console.WriteLine(value);
+        }
+    }
 }

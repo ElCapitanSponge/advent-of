@@ -7,14 +7,14 @@ public class Day1 : DayBase
     #region Constructor
 
     public Day1(FileEnvironmentType environmentType)
-        : base(environmentType, false)
+        : base(environmentType, false, false)
     {
         this._numbersColumnOne = new List<int>();
         this._numbersColumnTwo = new List<int>();
     }
 
     public Day1(FileEnvironmentType environmentType, bool useQuestionData)
-        : base(environmentType, useQuestionData)
+        : base(environmentType, useQuestionData, false)
     {
         this._numbersColumnOne = new List<int>();
         this._numbersColumnTwo = new List<int>();

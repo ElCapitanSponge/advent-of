@@ -8,34 +8,19 @@ public class Day3 : DayBase
     #region Constructor
 
     public Day3(FileEnvironmentType environmentType)
-        : base(environmentType, false)
-    {
-        this._differentDataUsed = false;
-    }
+        : base(environmentType, false, false) { }
 
     public Day3(FileEnvironmentType environmentType, bool differentDataUsed)
-        : base(environmentType, false)
-    {
-        this._differentDataUsed = differentDataUsed;
-    }
+        : base(environmentType, false, differentDataUsed) { }
 
     public Day3(FileEnvironmentType environmentType, bool useQuestionData, bool differentDataUsed)
-        : base(environmentType, useQuestionData)
-    {
-        this._differentDataUsed = differentDataUsed;
-    }
+        : base(environmentType, useQuestionData, differentDataUsed) { }
 
     #endregion // Constructor
 
-    #region Fields
-
-    private readonly bool _differentDataUsed;
-
-    #endregion // Fields
-
     #region Methods
 
-    private static List<string> ExtractMulPairs(string input)
+    private List<string> ExtractMulPairs(string input)
     {
         List<string> result = new List<string>();
         string pattern = @"mul\((\d{1,3}),(\d{1,3})\)";
@@ -44,6 +29,37 @@ public class Day3 : DayBase
         foreach (Match match in matches)
         {
             result.Add(match.Value);
+        }
+        return result;
+    }
+
+    private List<string> ExtractMulPairsClosure(string input)
+    {
+        List<string> result = new List<string>();
+        string pattern = @"mul\((\d{1,3}),(\d{1,3})\)";
+        Regex regex = new Regex(pattern);
+        MatchCollection matches = regex.Matches(input);
+
+        bool isEnabled = true;
+        foreach (Match match in matches)
+        {
+            string precedingText = input.Substring(0, match.Index);
+            int lastDont = precedingText.LastIndexOf("don't()");
+            int lastDo = precedingText.LastIndexOf("do()");
+
+            if (lastDont > lastDo)
+            {
+                isEnabled = false;
+            }
+            else if (lastDo > lastDont)
+            {
+                isEnabled = true;
+            }
+
+            if (isEnabled)
+            {
+                result.Add(match.Value);
+            }
         }
         return result;
     }
@@ -109,6 +125,22 @@ public class Day3 : DayBase
             this.LoadAndReadFile(SolutionPart.PartTwo);
         }
 
+        this.FileLines?.ToList()
+            .ForEach(line =>
+            {
+                Utils.Print(line, this.EnvironmentType);
+                List<string> mulPairs = ExtractMulPairsClosure(line);
+                mulPairs.ForEach(mulPair =>
+                {
+                    Utils.Print(mulPair, this.EnvironmentType);
+                    Tuple<int, int>? values = ExtractMulValues(mulPair);
+                    if (values != null)
+                    {
+                        result += Multiply(values.Item1, values.Item2);
+                    }
+                });
+            });
+
         return result;
     }
 
@@ -119,8 +151,6 @@ public class Day3 : DayBase
     protected override string FileName => "Day3.dat";
 
     protected override string SplitString => "";
-
-    protected override bool TestDataDiffersBetweenParts => this._differentDataUsed;
 
     #endregion // Properties
 }

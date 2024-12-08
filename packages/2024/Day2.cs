@@ -7,10 +7,10 @@ public class Day2 : DayBase
     #region Constructor
 
     public Day2(FileEnvironmentType environmentType)
-        : base(environmentType, false) { }
+        : base(environmentType, false, false) { }
 
     public Day2(FileEnvironmentType environmentType, bool useQuestionData)
-        : base(environmentType, useQuestionData) { }
+        : base(environmentType, useQuestionData, false) { }
 
     #endregion // Constructor
 

@@ -6,17 +6,26 @@ public abstract class DayBase
 {
     #region Constructor
 
-    public DayBase(FileEnvironmentType environmentType, bool useQuestionData)
+    public DayBase(
+        FileEnvironmentType environmentType,
+        bool useQuestionData,
+        bool differentDataUsed
+    )
     {
+        this._differentTestDataUsed = differentDataUsed;
         this._environmentType = environmentType;
         this._useQuestionData = useQuestionData;
-        this.LoadAndReadFile();
+        if (!this.TestDataDiffersBetweenParts)
+        {
+            this.LoadAndReadFile();
+        }
     }
 
     #endregion // Constructor
 
     #region Fields
 
+    private readonly bool _differentTestDataUsed;
     private readonly FileEnvironmentType _environmentType;
     private IEnumerable<string>? _fileLines;
     private bool _useQuestionData;
@@ -39,7 +48,7 @@ public abstract class DayBase
     protected void LoadAndReadFile(SolutionPart solutionPart)
     {
         Assertion.Assert(
-            !this.TestDataDiffersBetweenParts,
+            this.TestDataDiffersBetweenParts,
             "You are not allowed to use different test data between parts"
         );
         Assertion.Assert(
@@ -89,7 +98,7 @@ public abstract class DayBase
 
     protected abstract string SplitString { get; }
 
-    protected virtual bool TestDataDiffersBetweenParts => false;
+    protected bool TestDataDiffersBetweenParts => this._differentTestDataUsed;
 
     protected bool UseQuestionData => this._useQuestionData;
 

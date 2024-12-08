@@ -31,7 +31,7 @@ public class Day4Test
 	public void SamplePartTwo()
 	{
 		Day4 day4 = new Day4(FileEnvironmentType.Test);
-		Assert.Equal(0, day4.SolvePartTwo());
+		Assert.Equal(9, day4.SolvePartTwo());
 	}
 
 	[Fact]

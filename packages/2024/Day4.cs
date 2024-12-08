@@ -77,6 +77,43 @@ public class Day4 : DayBase
         return true;
     }
 
+    private bool IsXMasPresent(char[,] grid, int r, int c)
+    {
+        return (
+            (
+                grid[r, c] == 'M'
+                && grid[r, c + 2] == 'S'
+                && grid[r + 1, c + 1] == 'A'
+                && grid[r + 2, c] == 'M'
+                && grid[r + 2, c + 2] == 'S'
+            )
+            || // M.S - .A. - M.S
+            (
+                grid[r, c] == 'S'
+                && grid[r, c + 2] == 'M'
+                && grid[r + 1, c + 1] == 'A'
+                && grid[r + 2, c] == 'S'
+                && grid[r + 2, c + 2] == 'M'
+            )
+            || // S.M - .A. - S.M
+            (
+                grid[r, c] == 'M'
+                && grid[r, c + 2] == 'M'
+                && grid[r + 1, c + 1] == 'A'
+                && grid[r + 2, c] == 'S'
+                && grid[r + 2, c + 2] == 'S'
+            )
+            || // M.M - .A. - S.S
+            (
+                grid[r, c] == 'S'
+                && grid[r, c + 2] == 'S'
+                && grid[r + 1, c + 1] == 'A'
+                && grid[r + 2, c] == 'M'
+                && grid[r + 2, c + 2] == 'M'
+            ) // S.S - .A. - M.M
+        );
+    }
+
     protected override void ParseFileLines()
     {
         int columns = this.FileLines?.First().Length ?? 0;
@@ -109,7 +146,26 @@ public class Day4 : DayBase
     public override int SolvePartTwo()
     {
         this.ParseFileLines();
-        return 0;
+
+        if (this._findAWord == null)
+        {
+            return 0;
+        }
+
+        int count = 0;
+        int rows = this._findAWord.GetLength(0);
+        int cols = this._findAWord.GetLength(1);
+        for (int r = 0; r < rows - 2; r++)
+        {
+            for (int c = 0; c < cols - 2; c++)
+            {
+                if (this.IsXMasPresent(this._findAWord, r, c))
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     #endregion // Methods

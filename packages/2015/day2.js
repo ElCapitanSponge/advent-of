@@ -9,8 +9,8 @@ function Day2Part1(lines) {
 	for (const line of lines) {
 		/** @type {number[]} */
 		const [l, w, h] = line.split("x").map(Number)
-		const smallest = Math.min(l*w, w*h, h*l)
 		/** @type {number} */
+		const smallest = Math.min(l*w, w*h, h*l)
 		total += 2*l*w + 2*w*h + 2*h*l + smallest
 	}
 

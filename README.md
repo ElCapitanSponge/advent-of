@@ -11,7 +11,10 @@ The repository is my solutions to the ***Advent of Code***
 
 ### 2015
 
-- [ ] Day1
+- [x] Day1
+  - [x] Part 1
+  - [x] Part 2
+- [ ] Day2
   - [x] Part 1
   - [ ] Part 2
 

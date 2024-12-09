@@ -1,4 +1,8 @@
 {
-  "name": "2015",
-  "version": "1.0.0"
+	"name": "2015",
+	"version": "1.0.0",
+	"type": "module",
+	"devDependencies": {
+		"@types/node": "^22.9.0"
+	}
 }

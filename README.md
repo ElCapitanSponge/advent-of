@@ -18,7 +18,7 @@ The repository is my solutions to the ***Advent of Code***
   - [x] Part 1
   - [x] Part 2
 - [ ] Day3
-  - [ ] Part 1
+  - [x] Part 1
   - [ ] Part 2
 
 ### 2024

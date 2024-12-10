@@ -2,7 +2,7 @@
  * @param {string[]} lines
  * @returns number
  */
-function Day2Part1(lines) {
+const Day2Part1 = (lines) => {
 	/** @type {number} */
 	let total = 0;
 
@@ -29,7 +29,7 @@ function Day2Part1(lines) {
  * @param {string[]} lines
  * @returns number
  */
-function Day2Part2(lines) {
+const Day2Part2 = (lines) => {
 	/** @type {number} */
 	let ribbon = 0;
 
@@ -50,7 +50,7 @@ function Day2Part2(lines) {
  * @param {number} height
  * @returns TwoSmallestSides
  */
-function TwoSmallest(length, width, height) {
+const TwoSmallest = (length, width, height) => {
 	/** @type {TwoSmallestSides} */
 	let values = new Array(2).fill(null)
 

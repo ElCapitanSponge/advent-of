@@ -1,21 +1,25 @@
 import * as crypto from "crypto";
 
 /**
- * @param {string} input
+ * @param {string} hashKey
+ * @param {number} numZeros
  * @returns number
  */
-const Day4Part1 = (input) => {
+const Day4Part1And2 = (hashKey, numZeros) => {
 	/** @type {number} */
 	let counter = 0;
 	/** @type {string} */
 	let hash = "";
-	while (hash.substring(0, 5) !== "00000") {
+	/** @type {string} */
+	const zeroString = "0".repeat(numZeros);
+
+	while (hash.substring(0, numZeros) !== zeroString) {
 		counter++;
 		hash = crypto.createHash("md5")
-			.update(input + counter)
+			.update(hashKey + counter)
 			.digest("hex");
 	}
 	return counter;
 }
 
-export { Day4Part1 };
+export { Day4Part1And2 };

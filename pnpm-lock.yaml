@@ -15,6 +15,9 @@ importers:
       '@eslint/js':
         specifier: ^9.16.0
         version: 9.16.0
+      '@stylistic/eslint-plugin-js':
+        specifier: ^2.12.1
+        version: 2.12.1(eslint@9.16.0)
       '@types/node':
         specifier: ^22.9.0
         version: 22.10.1
@@ -36,6 +39,9 @@ importers:
       '@eslint/js':
         specifier: ^9.16.0
         version: 9.16.0
+      '@stylistic/eslint-plugin-js':
+        specifier: ^2.12.1
+        version: 2.12.1(eslint@9.16.0)
       '@types/node':
         specifier: ^22.9.0
         version: 22.10.1
@@ -339,6 +345,12 @@ packages:
     resolution: {integrity: sha512-ZvK2jBafvttJjoIdKm/Q/Bh7IJ1Ose9IBOwpOXcOvW3ikGTQGmKDgxTC6oCAzW6PynbkKP8+um1du81XJHZ0JA==}
     cpu: [x64]
     os: [win32]
+
+  '@stylistic/eslint-plugin-js@2.12.1':
+    resolution: {integrity: sha512-5ybogtEgWIGCR6dMnaabztbWyVdAPDsf/5XOk6jBonWug875Q9/a6gm9QxnU3rhdyDEnckWKX7dduwYJMOWrVA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      eslint: '>=8.40.0'
 
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
@@ -1008,6 +1020,12 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.28.1':
     optional: true
+
+  '@stylistic/eslint-plugin-js@2.12.1(eslint@9.16.0)':
+    dependencies:
+      eslint: 9.16.0
+      eslint-visitor-keys: 4.2.0
+      espree: 10.3.0
 
   '@types/estree@1.0.6': {}
 

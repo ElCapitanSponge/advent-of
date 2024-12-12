@@ -4,26 +4,26 @@
  */
 const HasInvalidPair = (word) => {
 	if (word.includes("ab")) {
-		return true;
+		return true
 	}
 	if (word.includes("cd")) {
-		return true;
+		return true
 	}
 	if (word.includes("pq")) {
-		return true;
+		return true
 	}
 	if (word.includes("xy")) {
-		return true;
+		return true
 	}
 
-	return false;
+	return false
 }
 
 /**
  * @param {string} word
  * @returns bool
  */
-const HasDoubleLetter = (word) => /(.)\1/.test(word);
+const HasDoubleLetter = (word) => /(.)\1/.test(word)
 
 /**
  * @param {string} word
@@ -31,7 +31,7 @@ const HasDoubleLetter = (word) => /(.)\1/.test(word);
  */
 const HasThreeVowels = (word) => {
 	/** @type {number} */
-	let vowelCount = 0;
+	let vowelCount = 0
 
 	for (let i = 0; i < word.length; i++) {
 		if (
@@ -41,11 +41,11 @@ const HasThreeVowels = (word) => {
 			word[i] === "o" ||
 			word[i] === "u"
 		) {
-			vowelCount++;
+			vowelCount++
 		}
 	}
 
-	return vowelCount >= 3;
+	return vowelCount >= 3
 }
 
 /**
@@ -54,7 +54,7 @@ const HasThreeVowels = (word) => {
  */
 const Day5Part1 = (words) => {
 	/** @type {number} */
-	let niceWords = 0;
+	let niceWords = 0
 
 	words.forEach(word => {
 		if (
@@ -62,11 +62,11 @@ const Day5Part1 = (words) => {
 			HasDoubleLetter(word) &&
 			HasThreeVowels(word)
 		) {
-			niceWords++;
+			niceWords++
 		}
 	})
 
-	return niceWords;
+	return niceWords
 }
 
 /**
@@ -75,12 +75,12 @@ const Day5Part1 = (words) => {
  */
 const Day5Part2 = (words) => {
 	/** @type {number} */
-	let niceWords = 0;
+	let niceWords = 0
 
 	words.forEach(word => {
 	})
 
-	return niceWords;
+	return niceWords
 }
 
-export { Day5Part1, Day5Part2 };
+export { Day5Part1, Day5Part2 }

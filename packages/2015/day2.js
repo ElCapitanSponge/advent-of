@@ -4,17 +4,17 @@
  */
 const Day2Part1 = (lines) => {
 	/** @type {number} */
-	let total = 0;
+	let total = 0
 
 	for (const line of lines) {
 		/** @type {number[]} */
-		const [l, w, h] = line.split("x").map(Number);
+		const [l, w, h] = line.split("x").map(Number)
 		/** @type {number} */
-		const smallest = Math.min(l * w, w * h, h * l);
-		total += 2 * l * w + 2 * w * h + 2 * h * l + smallest;
+		const smallest = Math.min(l * w, w * h, h * l)
+		total += 2 * l * w + 2 * w * h + 2 * h * l + smallest
 	}
 
-	return total;
+	return total
 }
 
 /**
@@ -24,25 +24,6 @@ const Day2Part1 = (lines) => {
  * @property {number} 0 The smallest side
  * @property {number} 1 The next smallest side
  */
-
-/**
- * @param {string[]} lines
- * @returns number
- */
-const Day2Part2 = (lines) => {
-	/** @type {number} */
-	let ribbon = 0;
-
-	for (const line of lines) {
-		/** @type {number[]} */
-		const [l, w, h] = line.split("x").map(Number);
-		/** @type {TwoSmallestSides} */
-		const smallest = TwoSmallest(l, w, h)
-		ribbon += (smallest[0]*2 + smallest[1]*2) + (l*w*h)
-	}
-
-	return ribbon;
-}
 
 /**
  * @param {number} length
@@ -62,4 +43,23 @@ const TwoSmallest = (length, width, height) => {
 	return values
 }
 
-export { Day2Part1, Day2Part2 };
+/**
+ * @param {string[]} lines
+ * @returns number
+ */
+const Day2Part2 = (lines) => {
+	/** @type {number} */
+	let ribbon = 0
+
+	for (const line of lines) {
+		/** @type {number[]} */
+		const [l, w, h] = line.split("x").map(Number)
+		/** @type {TwoSmallestSides} */
+		const smallest = TwoSmallest(l, w, h)
+		ribbon += (smallest[0]*2 + smallest[1]*2) + (l*w*h)
+	}
+
+	return ribbon
+}
+
+export { Day2Part1, Day2Part2 }

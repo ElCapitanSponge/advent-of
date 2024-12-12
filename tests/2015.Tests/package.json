@@ -9,6 +9,9 @@
 		"vitest": "^2.1.8"
 	},
 	"devDependencies": {
-		"@types/node": "^22.9.0"
+		"@eslint/js": "^9.16.0",
+		"@types/node": "^22.9.0",
+		"eslint": "^9.16.0",
+		"globals": "^15.13.0"
 	}
 }

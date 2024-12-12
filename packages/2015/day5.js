@@ -70,6 +70,43 @@ const Day5Part1 = (words) => {
 }
 
 /**
+ * param {string} word
+ * @returns bool
+ */
+const HasPair = (word) => {
+	/** @type {bool} */
+	let pair = false
+
+	for (let i = 0; i < word.length - 1; i++) {
+		const pairToCheck = word[i] + word[i + 1]
+		if (word.includes(pairToCheck, i + 2)) {
+			pair = true
+			break
+		}
+	}
+
+	return pair
+}
+
+/**
+ * @param {string} word
+ * @returns bool
+ */
+const HasRepeat = (word) => {
+	/** @type {bool} */
+	let repeat = false
+
+	for (let i = 0; i < word.length - 2; i++) {
+		if (word[i] === word[i + 2]) {
+			repeat = true
+			break
+		}
+	}
+
+	return repeat
+}
+
+/**
  * @param {string[]} words
  * @returns number
  */
@@ -78,6 +115,12 @@ const Day5Part2 = (words) => {
 	let niceWords = 0
 
 	words.forEach(word => {
+		if (
+			HasPair(word) &&
+			HasRepeat(word)
+		) {
+			niceWords++
+		}
 	})
 
 	return niceWords

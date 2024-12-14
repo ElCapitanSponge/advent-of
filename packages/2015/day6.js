@@ -46,19 +46,22 @@ class Day6 {
 	 * @param {string} instruction
 	 */
 	parseInstruction = (instruction) => {
-		const [command, start, end] = instruction.match(/(toggle|turn on|turn off) (\d+,\d+) through (\d+,\d+)/).slice(1)
-		const [startX, startY] = start.split(',').map(Number)
-		const [endX, endY] = end.split(',').map(Number)
+		const [command, start, end] = instruction
+			.match(/(toggle|turn on|turn off) (\d+,\d+) through (\d+,\d+)/).slice(1)
+		const [startX, startY] = start.split(",").map(Number)
+		const [endX, endY] = end.split(",").map(Number)
 
 		switch (command) {
-			case 'turn on':
+			case "turn on":
 				this.#turnOn([startX, startY], [endX, endY])
 				break
-			case 'turn off':
+			case "turn off":
 				this.#turnOff([startX, startY], [endX, endY])
 				break
-			case 'toggle':
+			case "toggle":
 				this.#toggle([startX, startY], [endX, endY])
+				break
+			default:
 				break
 		}
 	}
@@ -90,8 +93,7 @@ class Day6 {
 	#turnOff = (start, end) => {
 		for (let i = start[0]; i <= end[0]; i++) {
 			for (let j = start[1]; j <= end[1]; j++) {
-				if
-					(this.#part === 1) {
+				if (this.#part === 1) {
 					this.#lights[i][j] = 0
 				}
 

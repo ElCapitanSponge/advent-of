@@ -70,11 +70,11 @@ const Day5Part1 = (words) => {
 }
 
 /**
- * param {string} word
+ * @param {string} word
  * @returns bool
  */
 const HasPair = (word) => {
-	/** @type {bool} */
+	/** @type {boolean} */
 	let pair = false
 
 	for (let i = 0; i < word.length - 1; i++) {
@@ -90,10 +90,10 @@ const HasPair = (word) => {
 
 /**
  * @param {string} word
- * @returns bool
+ * @returns boolean
  */
 const HasRepeat = (word) => {
-	/** @type {bool} */
+	/** @type {boolean} */
 	let repeat = false
 
 	for (let i = 0; i < word.length - 2; i++) {

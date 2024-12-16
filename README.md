@@ -30,7 +30,7 @@ The repository is my solutions to the ***Advent of Code***
   - [x] Part 1
   - [x] Part 2
 - [ ] Day 7
-  - [ ] Part 1
+  - [x] Part 1
   - [ ] Part 2
 - [ ] Day 8
   - [ ] Part 1

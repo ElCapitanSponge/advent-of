@@ -34,11 +34,10 @@ const GetLineCommand = (line) => {
  */
 const PopulateWires = (wires, lines) => {
 	lines.forEach((line, idx) => {
-		// TODO: remove \r from string
-		const tmpLine = line
+		/** @type {string} */
+		const tmpLine = line.trim()
 		if (!wires.some(w => w.name === tmpLine.split(" -> ")[1])) {
 			let name = tmpLine.split(" -> ")[1]
-			console.log(name)
 			wires.push({
 				name: name,
 				value: undefined,
@@ -57,13 +56,19 @@ const PopulateWires = (wires, lines) => {
 const GetValues = (allocationLine) => {
 	/** @type {string[]} */
 	const valuesInitial = allocationLine.split(" -> ")[0].split(" ")
-	return valuesInitial.filter(v => v !== "AND" && v !== "OR" && v !== "LSHIFT" && v !== "RSHIFT" && v !== "NOT")
+	return valuesInitial.filter(v =>
+		v !== "AND" &&
+		v !== "OR" &&
+		v !== "LSHIFT" &&
+		v !== "RSHIFT" &&
+		v !== "NOT"
+	)
 }
 
 /**
  * @param {number[]} values
  * @param {BitwiseOperation} command
- * @returns {number}
+ * @returns {number?}
  */
 const GetResult = (values, command) => {
 	switch (command) {
@@ -80,14 +85,14 @@ const GetResult = (values, command) => {
 		case "ASSIGN":
 			return values[0]
 		default:
-			return 0
+			return undefined
 	}
 }
 
 /**
  * @param {Wire[]} wires
  * @param {string} wireName
- * @returns {number}
+ * @returns {number?}
  */
 const GetWireValue = (wires, wireName) => {
 	/** @type {string[]} */
@@ -97,12 +102,23 @@ const GetWireValue = (wires, wireName) => {
 	valuesList.forEach(v => {
 		if (isNaN(parseInt(v))) {
 			if (wires.some(w => w.name === v)) {
-				valuesProper.push(GetWireValue(wires, v))
+				/** @type {Wire} */
+				const wire = wires.find(w => w.name === v)
+				if (wire.value !== undefined) {
+					valuesProper.push(wire.value)
+				} else {
+					valuesProper.push(undefined)
+				}
 			}
 		} else {
 			valuesProper.push(Mask16Bit(parseInt(v)))
 		}
 	})
+
+	if (valuesProper.some(v => v === undefined)) {
+		return undefined
+	}
+
 	/** @type {BitwiseOperation} */
 	const command = GetLineCommand(wires.find(w => w.name === wireName).allocation)
 	/** @type {number} */
@@ -117,12 +133,16 @@ const ParseWires = (lines) => {
 	/** @type {Wire[]} */
 	let wires = PopulateWires([], lines)
 
-	wires.forEach(w => {
-		if (w.value === undefined) {
-			w.value = GetWireValue(wires, w.name)
-			console.log(w)
-		}
-	})
+	let containsUndefined = wires.some(w => w.value === undefined)
+
+	while (containsUndefined) {
+		wires.forEach(w => {
+			if (w.value === undefined) {
+				w.value = GetWireValue(wires, w.name)
+			}
+		})
+		containsUndefined = wires.some(w => w.value === undefined)
+	}
 
 	return wires
 }

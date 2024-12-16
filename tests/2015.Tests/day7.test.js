@@ -1,5 +1,5 @@
 import { expect, test } from "vitest"
-import { Day7Part1 } from "../../packages/2015/day7.js"
+import { Day7Part1, Day7Part2 } from "../../packages/2015/day7.js"
 import { ReadFile } from "../../packages/2015/Common/FileHandling.js"
 
 test("Day 7 Part 1 - Demo", () => {
@@ -50,5 +50,12 @@ test("Day 7 Part 1 - Answer", () => {
 	/** @type {string[]} */
 	const lines = ReadFile("../../packages/2015/Data/Day7.dat")
 	console.log(Day7Part1(lines, "a"))
+	expect(true).toBe(true)
+})
+
+test("Day 7 Part 2 - Answer", () => {
+	/** @type {string[]} */
+	const lines = ReadFile("../../packages/2015/Data/Day7.dat")
+	console.log(Day7Part2(lines, "a", "b", 16076))
 	expect(true).toBe(true)
 })

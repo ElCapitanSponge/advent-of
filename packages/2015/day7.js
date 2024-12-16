@@ -127,11 +127,21 @@ const GetWireValue = (wires, wireName) => {
 
 /**
  * @param {string[]} lines
+ * @param {string?} overloadWireName
+ * @param {number?} overloadValue
  * @returns {Wire[]}
  */
-const ParseWires = (lines) => {
+const ParseWires = (lines, overloadWireName = undefined, overloadValue = undefined) => {
 	/** @type {Wire[]} */
 	let wires = PopulateWires([], lines)
+
+	if (overloadWireName !== undefined && overloadValue !== undefined) {
+		wires.forEach(w => {
+			if (w.name === overloadWireName) {
+				w.value = Mask16Bit(overloadValue)
+			}
+		})
+	}
 
 	let containsUndefined = wires.some(w => w.value === undefined)
 
@@ -160,5 +170,19 @@ const Day7Part1 = (lines, wireName) => {
 	return wire?.value ?? -1
 }
 
-export { Day7Part1 }
+/**
+ * @param {string[]} lines
+ * @param {string} wireName
+ * @param {string} overloadWireName
+ * @param {number} overloadValue
+ * @returns {number}
+ */
+const Day7Part2 = (lines, wireName, overloadWireName, overloadValue) => {
+	/** @type {Wire[]} */
+	const wires = ParseWires(lines, overloadWireName, overloadValue)
+	/** @type {Wire} */
+	const wire = wires.find(w => w.name === wireName)
+	return wire?.value ?? -1
+}
+export { Day7Part1, Day7Part2 }
 

@@ -6,163 +6,107 @@ const Mask16Bit = (value) => value & 0xFFFF
 
 /**
  * @param {string} line
- * @returns {string}
+ * @returns {BitwiseOperation}
  */
-const getCommand = (line) => {
+const GetLineCommand = (line) => {
 	if (line.includes("AND")) {
 		return "AND"
-	} else if (line.includes("OR")) {
+	}
+	if (line.includes("OR")) {
 		return "OR"
-	} else if (line.includes("LSHIFT")) {
+	}
+	if (line.includes("LSHIFT")) {
 		return "LSHIFT"
-	} else if (line.includes("RSHIFT")) {
+	}
+	if (line.includes("RSHIFT")) {
 		return "RSHIFT"
-	} else if (line.includes("NOT")) {
+	}
+	if (line.includes("NOT")) {
 		return "NOT"
-	} else {
-		return "ASSIGN"
 	}
-}
-
-/**
- * @param {string} line
- * @returns {string}
- */
-const getWireName = (line) => line.split(" -> ")[1].replace("\r", "")
-
-/**
- * @param {string} line
- * @param {string} command
- * @returns {string[]}
- */
-const getValues = (line, command) => {
-	if (command === "ASSIGN") {
-		return [line.split(" -> ")[0]]
-	} else if (command === "NOT") {
-		return [line.split(" -> ")[0].split(" ")[1]]
-	} else {
-		return line.split(" -> ")[0]
-			.split(" ")
-			.filter(v => v !== "AND" && v !== "OR" && v !== "LSHIFT" && v !== "RSHIFT")
-	}
-}
-
-/**
- * @typedef {Object} Wire
- * @property {string} name
- * @property {number} value
- */
-
-/**
- * @typedef {Object} ProcessResult
- * @property {Wire[]} wires
- * @property {string[]} missingLines
- */
-
-
-/**
- * @param {string} command
- * @param {string[]} values
- * @param {Wire[]} wires
- * @returns {number | undefined}
- */
-const getResult = (command, values, wires) => {
-	if (command === "ASSIGN") {
-		/** @type {number} */
-		if (isNaN(Number(values[0]))) {
-			/** @type {number | undefined} */
-			const value = wires.find(w => w.name === values[0])?.value
-			console.log(values[0])
-			console.log(wires.find(w => w.name === values[0]))
-			console.log(value)
-			return value
-		}
-		return Number(values[0])
-	} else if (command === "NOT") {
-		/** @type {number | undefined} */
-		const value = wires.find(w => w.name === values[0])?.value
-		if (value === undefined) {
-			return undefined
-		}
-		return ~value
-	} else if (command === "AND") {
-		/** @type {number | undefined} */
-		const value1 = wires.find(w => w.name === values[0])?.value
-		if (value1 === undefined) {
-			return undefined
-		}
-		/** @type {number | undefined} */
-		const value2 = wires.find(w => w.name === values[1])?.value
-		if (value2 === undefined) {
-			return undefined
-		}
-		return value1 & value2
-	} else if (command === "OR") {
-		/** @type {number | undefined} */
-		const value1 = wires.find(w => w.name === values[0])?.value
-		if (value1 === undefined) {
-			return undefined
-		}
-		/** @type {number | undefined} */
-		const value2 = wires.find(w => w.name === values[1])?.value
-		if (value2 === undefined) {
-			return undefined
-		}
-		return value1 | value2
-	} else if (command === "LSHIFT") {
-		/** @type {number | undefined} */
-		const value1 = wires.find(w => w.name === values[0])?.value
-		if (value1 === undefined) {
-			return undefined
-		}
-		/** @type {number} */
-		const value2 = Number(values[1])
-		return value1 << value2
-	} else if (command === "RSHIFT") {
-		/** @type {number | undefined} */
-		const value1 = wires.find(w => w.name === values[0])?.value
-		if (value1 === undefined) {
-			return undefined
-		}
-		/** @type {number} */
-		const value2 = Number(values[1])
-		return value1 >> value2
-	}
+	return "ASSIGN"
 }
 
 /**
  * @param {Wire[]} wires
  * @param {string[]} lines
- * @returns {ProcessResult}
+ * @returns {Wire[]}
  */
-const process = (wires, lines) => {
-	const missingLines = []
-
-	for (const line of lines) {
-		/** @type {string} */
-		const command = getCommand(line)
-		/** @type {string} */
-		const wireName = getWireName(line)
-		/** @type {string[]} */
-		const values = getValues(line, command)
-		/** @type {number | undefined} */
-		const result = getResult(command, values, wires)
-		console.log(result)
-		if (result === undefined) {
-			missingLines.push(line)
-		} else {
-			if (wires.find(w => w.name === wireName)) {
-				wires.find(w => w.name === wireName).value = Mask16Bit(result)
-			} else {
-				wires.push({
-					name: wireName,
-					value: Mask16Bit(result)
-				})
-			}
+const PopulateWires = (wires, lines) => {
+	lines.forEach((line, idx) => {
+		// TODO: remove \r from string
+		const tmpLine = line
+		if (!wires.some(w => w.name === tmpLine.split(" -> ")[1])) {
+			let name = tmpLine.split(" -> ")[1]
+			console.log(name)
+			wires.push({
+				name: name,
+				value: undefined,
+				allocation: tmpLine,
+				allocationLine: idx
+			})
 		}
-	}
+	})
+	return wires
+}
 
-	return { wires, missingLines }
+/**
+ * @param {string} allocationLine
+ * @returns {string[]}
+ */
+const GetValues = (allocationLine) => {
+	/** @type {string[]} */
+	const valuesInitial = allocationLine.split(" -> ")[0].split(" ")
+	return valuesInitial.filter(v => v !== "AND" && v !== "OR" && v !== "LSHIFT" && v !== "RSHIFT" && v !== "NOT")
+}
+
+/**
+ * @param {number[]} values
+ * @param {BitwiseOperation} command
+ * @returns {number}
+ */
+const GetResult = (values, command) => {
+	switch (command) {
+		case "AND":
+			return values[0] & values[1]
+		case "OR":
+			return values[0] | values[1]
+		case "LSHIFT":
+			return values[0] << values[1]
+		case "RSHIFT":
+			return values[0] >> values[1]
+		case "NOT":
+			return ~values[0]
+		case "ASSIGN":
+			return values[0]
+		default:
+			return 0
+	}
+}
+
+/**
+ * @param {Wire[]} wires
+ * @param {string} wireName
+ * @returns {number}
+ */
+const GetWireValue = (wires, wireName) => {
+	/** @type {string[]} */
+	const valuesList = GetValues(wires.find(w => w.name === wireName).allocation)
+	/** @type {number[]} */
+	const valuesProper = []
+	valuesList.forEach(v => {
+		if (isNaN(parseInt(v))) {
+			if (wires.some(w => w.name === v)) {
+				valuesProper.push(GetWireValue(wires, v))
+			}
+		} else {
+			valuesProper.push(Mask16Bit(parseInt(v)))
+		}
+	})
+	/** @type {BitwiseOperation} */
+	const command = GetLineCommand(wires.find(w => w.name === wireName).allocation)
+	/** @type {number} */
+	return Mask16Bit(GetResult(valuesProper, command))
 }
 
 /**
@@ -171,15 +115,14 @@ const process = (wires, lines) => {
  */
 const ParseWires = (lines) => {
 	/** @type {Wire[]} */
-	let wires = []
+	let wires = PopulateWires([], lines)
 
-	while (lines.length > 0) {
-		/** @type {ProcessResult} */
-		const result = process(wires, lines)
-		console.log(result)
-		wires = result.wires
-		lines = result.missingLines
-	}
+	wires.forEach(w => {
+		if (w.value === undefined) {
+			w.value = GetWireValue(wires, w.name)
+			console.log(w)
+		}
+	})
 
 	return wires
 }
@@ -194,7 +137,7 @@ const Day7Part1 = (lines, wireName) => {
 	const wires = ParseWires(lines)
 	/** @type {Wire} */
 	const wire = wires.find(w => w.name === wireName)
-	return wire?.value ?? 0
+	return wire?.value ?? -1
 }
 
 export { Day7Part1 }

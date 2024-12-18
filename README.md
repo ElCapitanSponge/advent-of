@@ -38,9 +38,9 @@ The repository is my solutions to the ***Advent of Code***
 - [x] Day 9
   - [x] Part 1
   - [x] Part 2
-- [ ] Day 10
+- [x] Day 10
   - [x] Part 1
-  - [ ] Part 2
+  - [x] Part 2
 - [ ] Day 11
   - [ ] Part 1
   - [ ] Part 2

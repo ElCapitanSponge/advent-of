@@ -41,7 +41,7 @@ const LookAndSay = (numberLine) => {
  * @param {number} iterations
  * @returns {string}
  */
-const Day10Part1 = (numberLine, iterations) => {
+const Day10 = (numberLine, iterations) => {
 	/** @type {string} */
 	let result = ""
 
@@ -53,4 +53,4 @@ const Day10Part1 = (numberLine, iterations) => {
 	return result
 }
 
-export { Day10Part1 }
+export { Day10 }

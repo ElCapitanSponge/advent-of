@@ -2,8 +2,8 @@
  * @param {string} numberLine
  * @returns {string}
  */
-const Day10Part1 = (numberLine) => {
-	/** @type {string} */
+const LookAndSay = (numberLine) => {
+/** @type {string} */
 	let result = ""
 	/** @type {string[][]} */
 	const groups = []
@@ -31,6 +31,24 @@ const Day10Part1 = (numberLine) => {
 	groups.forEach(group => {
 		result += `${group.length}${group[0]}`
 	})
+
+	return result
+
+}
+
+/**
+ * @param {string} numberLine
+ * @param {number} iterations
+ * @returns {string}
+ */
+const Day10Part1 = (numberLine, iterations) => {
+	/** @type {string} */
+	let result = ""
+
+	for (let i = 0; i < iterations; i++) {
+		result = LookAndSay(numberLine)
+		numberLine = result
+	}
 
 	return result
 }

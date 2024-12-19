@@ -22,10 +22,4 @@ declare global {
 		to: string;
 		distance: number;
 	}
-
-	// Day 11
-	type NextPasswordResponse = {
-		nextPassword: string;
-		characterIndex: number;
-	}
 }
